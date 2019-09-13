@@ -9,18 +9,14 @@ public class CameraControler : MonoBehaviour
     Vector3 rotationVector;
 
     // Start is called before the first frame update
-    void Start()
+    public void SetUp()
     {
-        Vector3 position = new Vector3(0f, GameVariables.width, GameVariables.width * 2);
+        Transform t = Instantiate(camera);
+        Vector3 position = new Vector3(0f, GetComponent<GameVariables>().width, GetComponent<GameVariables>().width);
         Vector3 rotationVector = new Vector3(0, 90, 0);
-        camera.localPosition = position;
+        t.localPosition = position;
         Quaternion rotation = Quaternion.Euler(rotationVector);
-        camera.rotation = rotation;
+        t.rotation = rotation;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -6,7 +6,6 @@ public class PlantEater : MonoBehaviour
 {
     public Transform plantEaterPreFab;
     public Transform babyPreFab;
-    public int numberOfPlantEaters;
     public int numberOfBabyPlantEaters;
     public int changeDirectionEveryNumStep;
     public float speedPlantEater;
@@ -15,7 +14,7 @@ public class PlantEater : MonoBehaviour
     List<GameObject> plantEatersList = new List<GameObject>();
     List<GameObject> babyPlantEatersList = new List<GameObject>();
 
-    public void Awake()
+    public void SetUp()
     {
         // Build the list of possible postions for plant eaters to start.
         SetAvailablePositions();
@@ -25,37 +24,45 @@ public class PlantEater : MonoBehaviour
 
         // Create baby plant eaters to start.
         CreateBabies();
-        numberOfBabyPlantEaters = 0;
+        GetComponent<GameVariables>().plantEaterCount = 0;
 
+    }
+
+    public void UpdateData()
+    {
+        positions.Clear();
+
+        // Build the list of possible postions for plant eaters to start.
+        SetAvailablePositions();
     }
 
     public void SetAvailablePositions()
     {
         // Build the list of possible postions for plant eaters to start.
-        for (int i = -(GameVariables.width) + 3; i <= (GameVariables.width) - 3; i += 2)
+        for (int i = -(GetComponent<GameVariables>().width) + 3; i <= (GetComponent<GameVariables>().width) - 3; i += 2)
         {
-            positions.Add(new Vector3(i, 1f, - ((GameVariables.width)-5)));
+            positions.Add(new Vector3(i, 1f, - ((GetComponent<GameVariables>().width)-5)));
         }
 
-        for (int i = -(GameVariables.width) + 3; i <= (GameVariables.width) - 3; i += 2)
+        for (int i = -(GetComponent<GameVariables>().width) + 3; i <= (GetComponent<GameVariables>().width) - 3; i += 2)
         {
-            positions.Add(new Vector3(i, 1f, ((GameVariables.width) - 5)));
+            positions.Add(new Vector3(i, 1f, ((GetComponent<GameVariables>().width) - 5)));
         }
 
-        for (int i = -(GameVariables.width) + 3; i <= (GameVariables.width) - 3; i += 2)
+        for (int i = -(GetComponent<GameVariables>().width) + 3; i <= (GetComponent<GameVariables>().width) - 3; i += 2)
         {
-            positions.Add(new Vector3((-GameVariables.width) + 5, 1f, i));
+            positions.Add(new Vector3((-GetComponent<GameVariables>().width) + 5, 1f, i));
         }
 
-        for (int i = -(GameVariables.width) + 3; i <= (GameVariables.width) - 3; i += 2)
+        for (int i = -(GetComponent<GameVariables>().width) + 3; i <= (GetComponent<GameVariables>().width) - 3; i += 2)
         {
-            positions.Add(new Vector3(GameVariables.width - 3 , 1f, i));
+            positions.Add(new Vector3(GetComponent<GameVariables>().width - 3 , 1f, i));
         }
     }
 
     public void CreatePlantEaters()
     {
-        for (int i = 0; i < numberOfPlantEaters; i++)
+        for (int i = 0; i < GetComponent<GameVariables>().plantEaterCount; i++)
         {
             // Pick a random location to spawn plant eater.
             int pos = Random.Range(0, positions.Count);
@@ -143,7 +150,7 @@ public class PlantEater : MonoBehaviour
         {
 
             // Move the plant eater.
-            if (plantEatersList[i].GetComponent<PlantEaterInfo>().dir == 0 && plantEatersList[i].transform.localPosition.x > -(GameVariables.width) + 5)
+            if (plantEatersList[i].GetComponent<PlantEaterInfo>().dir == 0 && plantEatersList[i].transform.localPosition.x > -(GetComponent<GameVariables>().width) + 5)
             {
                 plantEatersList[i].transform.Translate(Vector3.zero);
                 plantEatersList[i].transform.Translate(-Vector3.right * speedPlantEater);
@@ -156,7 +163,7 @@ public class PlantEater : MonoBehaviour
 
             }
 
-            else if (plantEatersList[i].GetComponent<PlantEaterInfo>().dir == 1 && plantEatersList[i].transform.localPosition.x < (GameVariables.width) - 5)
+            else if (plantEatersList[i].GetComponent<PlantEaterInfo>().dir == 1 && plantEatersList[i].transform.localPosition.x < (GetComponent<GameVariables>().width) - 5)
             {
                 plantEatersList[i].transform.Translate(Vector3.zero);
                 plantEatersList[i].transform.Translate(Vector3.right * speedPlantEater);
@@ -169,7 +176,7 @@ public class PlantEater : MonoBehaviour
 
             }
 
-            else if (plantEatersList[i].GetComponent<PlantEaterInfo>().dir == 2 && plantEatersList[i].transform.localPosition.z > -(GameVariables.width) + 5)
+            else if (plantEatersList[i].GetComponent<PlantEaterInfo>().dir == 2 && plantEatersList[i].transform.localPosition.z > -(GetComponent<GameVariables>().width) + 5)
             {
                 plantEatersList[i].transform.Translate(Vector3.zero);
                 plantEatersList[i].transform.Translate(-Vector3.forward * speedPlantEater);
@@ -182,7 +189,7 @@ public class PlantEater : MonoBehaviour
 
             }
 
-            else if (plantEatersList[i].GetComponent<PlantEaterInfo>().dir == 3 && plantEatersList[i].transform.localPosition.z < (GameVariables.width) - 5)
+            else if (plantEatersList[i].GetComponent<PlantEaterInfo>().dir == 3 && plantEatersList[i].transform.localPosition.z < (GetComponent<GameVariables>().width) - 5)
             {
                 plantEatersList[i].transform.Translate(Vector3.zero);
                 plantEatersList[i].transform.Translate(Vector3.forward * speedPlantEater);
@@ -199,25 +206,49 @@ public class PlantEater : MonoBehaviour
         for (int i = 0; i < babyPlantEatersList.Count; i++)
         {
             // Move the plant eater.
-            if (babyPlantEatersList[i].GetComponent<BabyPlantEaterInfo>().dir == 0 && babyPlantEatersList[i].transform.localPosition.x > -(GameVariables.width) + 5)
+            if (babyPlantEatersList[i].GetComponent<BabyPlantEaterInfo>().dir == 0 && babyPlantEatersList[i].transform.localPosition.x > -(GetComponent<GameVariables>().width) + 5)
             {
                 babyPlantEatersList[i].transform.Translate(Vector3.zero);
                 babyPlantEatersList[i].transform.Translate((-Vector3.right) * speedBabyPlantEater);
+
+                // Rotate the plant eater into the correct direction.
+                Transform eater = babyPlantEatersList[i].GetComponentInChildren<Transform>().Find("plantEater3");
+                Vector3 rotationVector = new Vector3(0, -90, 0);
+                Quaternion rotation = Quaternion.Euler(rotationVector);
+                eater.rotation = rotation;
             }
-            else if (babyPlantEatersList[i].GetComponent<BabyPlantEaterInfo>().dir == 1 && babyPlantEatersList[i].transform.localPosition.x < (GameVariables.width) - 5)
+            else if (babyPlantEatersList[i].GetComponent<BabyPlantEaterInfo>().dir == 1 && babyPlantEatersList[i].transform.localPosition.x < (GetComponent<GameVariables>().width) - 5)
             {
                 babyPlantEatersList[i].transform.Translate(Vector3.zero);
                 babyPlantEatersList[i].transform.Translate((Vector3.right) * speedBabyPlantEater);
+
+                // Rotate the plant eater into the correct direction.
+                Transform eater = babyPlantEatersList[i].GetComponentInChildren<Transform>().Find("plantEater3");
+                Vector3 rotationVector = new Vector3(0, 90, 0);
+                Quaternion rotation = Quaternion.Euler(rotationVector);
+                eater.rotation = rotation;
             }
-            else if (babyPlantEatersList[i].GetComponent<BabyPlantEaterInfo>().dir == 2 && babyPlantEatersList[i].transform.localPosition.z > -(GameVariables.width) + 5)
+            else if (babyPlantEatersList[i].GetComponent<BabyPlantEaterInfo>().dir == 2 && babyPlantEatersList[i].transform.localPosition.z > -(GetComponent<GameVariables>().width) + 5)
             {
                 babyPlantEatersList[i].transform.Translate(Vector3.zero);
                 babyPlantEatersList[i].transform.Translate((-Vector3.forward) * speedBabyPlantEater);
+
+                // Rotate the plant eater into the correct direction.
+                Transform eater = babyPlantEatersList[i].GetComponentInChildren<Transform>().Find("plantEater3");
+                Vector3 rotationVector = new Vector3(0, 180, 0);
+                Quaternion rotation = Quaternion.Euler(rotationVector);
+                eater.rotation = rotation;
             }
-            else if (babyPlantEatersList[i].GetComponent<BabyPlantEaterInfo>().dir == 3 && babyPlantEatersList[i].transform.localPosition.z < (GameVariables.width) - 5)
+            else if (babyPlantEatersList[i].GetComponent<BabyPlantEaterInfo>().dir == 3 && babyPlantEatersList[i].transform.localPosition.z < (GetComponent<GameVariables>().width) - 5)
             {
                 babyPlantEatersList[i].transform.Translate(Vector3.zero);
                 babyPlantEatersList[i].transform.Translate((Vector3.forward) * speedBabyPlantEater);
+
+                // Rotate the plant eater into the correct direction.
+                Transform eater = babyPlantEatersList[i].GetComponentInChildren<Transform>().Find("plantEater3");
+                Vector3 rotationVector = new Vector3(0, 0, 0);
+                Quaternion rotation = Quaternion.Euler(rotationVector);
+                eater.rotation = rotation;
             }
 
         }
@@ -236,8 +267,7 @@ public class PlantEater : MonoBehaviour
             {
                 Destroy(plantEatersList[i]);
                 plantEatersList.RemoveAt(i);
-                numberOfPlantEaters -= 1;
-                Debug.Log("Decrease Plant eaters by 1.");
+                GetComponent<GameVariables>().plantEaterCount -= 1;
             }
         }
 
@@ -258,12 +288,12 @@ public class PlantEater : MonoBehaviour
 
     public void KillAllPlantEaters()
     {
-        numberOfPlantEaters = 0;
+        GetComponent<GameVariables>().plantEaterCount = 0;
         for (int i = 0; i < plantEatersList.Count; i++)
         {
             if (plantEatersList[i].GetComponent<PlantEaterInfo>().isActive)
             {
-                numberOfPlantEaters += 1;
+                GetComponent<GameVariables>().plantEaterCount += 1;
             }
             Destroy(plantEatersList[i]);
         }
@@ -273,7 +303,7 @@ public class PlantEater : MonoBehaviour
         {
             if (babyPlantEatersList[i].GetComponent<BabyPlantEaterInfo>().isActive)
             {
-                numberOfPlantEaters += 1;
+                GetComponent<GameVariables>().plantEaterCount += 1;
             }
             Destroy(babyPlantEatersList[i]);
         }

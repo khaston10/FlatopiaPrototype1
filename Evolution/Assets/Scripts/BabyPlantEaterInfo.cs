@@ -11,7 +11,7 @@ public class BabyPlantEaterInfo : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.name == "Food(Clone)")
+        if (col.gameObject.name == "TreeCreator_Bush_A(Clone)")
         {
             Destroy(col.gameObject);
             hasEaten = true;

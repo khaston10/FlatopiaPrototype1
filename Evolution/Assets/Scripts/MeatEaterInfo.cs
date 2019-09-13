@@ -36,8 +36,15 @@ public class MeatEaterInfo : MonoBehaviour
 
         if(col.gameObject.name == "BabyPlantEater(Clone)" && col.gameObject.GetComponent<BabyPlantEaterInfo>().isActive)
         {
-            col.gameObject.GetComponent<Renderer>().enabled = false;
+            Transform plantEater3 = col.gameObject.GetComponentInChildren<Transform>().Find("plantEater3");
+            Transform body = plantEater3.gameObject.GetComponentInChildren<Transform>().Find("Body");
+
+            body.gameObject.GetComponent<Renderer>().enabled = false;
+
+
+            //col.gameObject.GetComponent<Renderer>().enabled = false;
             Destroy(col.gameObject.GetComponent<Rigidbody>());
+            Destroy(col.gameObject.GetComponent<Collider>());
             col.gameObject.GetComponent<BabyPlantEaterInfo>().isActive = false;
             foodEaten += 1;
 

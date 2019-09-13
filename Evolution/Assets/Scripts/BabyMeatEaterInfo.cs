@@ -14,5 +14,10 @@ public class BabyMeatEaterInfo : MonoBehaviour
         {
             Debug.Log("Baby Meat Eater hit food");
         }
+
+        if(col.gameObject.name == "TreeCreator_Bush_A(Clone)")
+        {
+            Physics.IgnoreCollision(col.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
+        }
     }
 }

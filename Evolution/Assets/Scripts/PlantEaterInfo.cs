@@ -29,5 +29,14 @@ public class PlantEaterInfo : MonoBehaviour
             }
         }
 
+        if (col.gameObject.name == "BabyPlantEater(Clone)" && isActive)
+        {
+            if (gameObject.GetComponent<PlantEaterInfo>().hasReproduced == false && gameObject.GetComponent<PlantEaterInfo>().hasEaten && hasEaten)
+            {
+                Physics.IgnoreCollision(col.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
+
+            }
+        }
+
     }
 }

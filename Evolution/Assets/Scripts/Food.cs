@@ -7,17 +7,15 @@ using System.IO;
 public class Food : MonoBehaviour
 {
     public Transform prefab;
-    public int foodCount;
     List<Vector3> positions = new List<Vector3>();
     List<Transform> foodList = new List<Transform>();
 
-    public void Awake()
+    public void SetUp()
     {
-        //Debug.Log(positions.Length);
-
-        for (int i = -(GameVariables.width) + 2; i < (GameVariables.width) - 2; i++)
+        // Fill the position list with available positions.
+        for (int i = -(GetComponent<GameVariables>().width) + 2; i < (GetComponent<GameVariables>().width) - 2; i++)
         {
-            for (int j = -(GameVariables.width) + 2; j < (GameVariables.width) - 2; j++)
+            for (int j = -(GetComponent<GameVariables>().width) + 2; j < (GetComponent<GameVariables>().width) - 2; j++)
             positions.Add(new Vector3(i, 1f, j));
         }
 
@@ -25,9 +23,22 @@ public class Food : MonoBehaviour
         PlaceFood();
     }
 
+    public void UpdateData()
+    {
+        positions.Clear();
+
+        // Fill the position list with available positions.
+        for (int i = -(GetComponent<GameVariables>().width) + 2; i < (GetComponent<GameVariables>().width) - 2; i++)
+        {
+            for (int j = -(GetComponent<GameVariables>().width) + 2; j < (GetComponent<GameVariables>().width) - 2; j++)
+                positions.Add(new Vector3(i, 1f, j));
+        }
+
+    }
+
     public void PlaceFood()
     {
-        for (int i = 0; i < foodCount; i++)
+        for (int i = 0; i < GetComponent<GameVariables>().foodCount; i++)
         {
             // Pick a random position.
             int pos = Random.Range(0, positions.Count);

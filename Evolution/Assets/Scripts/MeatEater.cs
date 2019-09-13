@@ -22,27 +22,33 @@ public class MeatEater : MonoBehaviour
         SetAvailablePositions();
     }
 
+    public void UpdateData()
+    {
+        positions.Clear();
+        SetAvailablePositions();
+    }
+
     public void SetAvailablePositions()
     {
         // Build the list of possible postions for meat eaters to start.
-        for (int i = -(GameVariables.width) +1; i <= (GameVariables.width) -1; i += 2)
+        for (int i = -(GetComponent<GameVariables>().width) +1; i <= (GetComponent<GameVariables>().width) -1; i += 2)
         {
-            positions.Add(new Vector3(i, 3f, -GameVariables.width + 1));
+            positions.Add(new Vector3(i, 3f, -GetComponent<GameVariables>().width + 1));
         }
 
-        for (int i = -(GameVariables.width) +1; i <= (GameVariables.width) -1; i += 2)
+        for (int i = -(GetComponent<GameVariables>().width) +1; i <= (GetComponent<GameVariables>().width) -1; i += 2)
         {
-            positions.Add(new Vector3(i, 3f, GameVariables.width - 1));
+            positions.Add(new Vector3(i, 3f, GetComponent<GameVariables>().width - 1));
         }
 
-        for (int i = -(GameVariables.width) +1; i <= (GameVariables.width); i += 2)
+        for (int i = -(GetComponent<GameVariables>().width) +1; i <= (GetComponent<GameVariables>().width); i += 2)
         {
-            positions.Add(new Vector3(-GameVariables.width + 2, 3f, i));
+            positions.Add(new Vector3(-GetComponent<GameVariables>().width + 2, 3f, i));
         }
 
-        for (int i = -(GameVariables.width) +1; i <= (GameVariables.width) -1; i += 2)
+        for (int i = -(GetComponent<GameVariables>().width) +1; i <= (GetComponent<GameVariables>().width) -1; i += 2)
         {
-            positions.Add(new Vector3(GameVariables.width, 3f, i));
+            positions.Add(new Vector3(GetComponent<GameVariables>().width, 3f, i));
         }
     }
 
@@ -101,7 +107,6 @@ public class MeatEater : MonoBehaviour
         {
             // Pick a random location to spawn meat eater.
             int pos = Random.Range(0, positions.Count);
-            Debug.Log("Pick Spot");
 
             //Create baby at location.
             Transform t = Instantiate(babyPreFab);
@@ -150,7 +155,7 @@ public class MeatEater : MonoBehaviour
         {
 
             // Move the meat eater.
-            if (meatEatersList[i].GetComponent<MeatEaterInfo>().dir == 0 && meatEatersList[i].transform.localPosition.x > -(GameVariables.width) + 5)
+            if (meatEatersList[i].GetComponent<MeatEaterInfo>().dir == 0 && meatEatersList[i].transform.localPosition.x > -(GetComponent<GameVariables>().width) + 5)
             {
                 meatEatersList[i].transform.Translate(Vector3.zero);
                 meatEatersList[i].transform.Translate(-Vector3.right * speedMeatEater);
@@ -163,7 +168,7 @@ public class MeatEater : MonoBehaviour
 
             }
 
-            else if (meatEatersList[i].GetComponent<MeatEaterInfo>().dir == 1 && meatEatersList[i].transform.localPosition.x < (GameVariables.width) - 5)
+            else if (meatEatersList[i].GetComponent<MeatEaterInfo>().dir == 1 && meatEatersList[i].transform.localPosition.x < (GetComponent<GameVariables>().width) - 5)
             {
                 meatEatersList[i].transform.Translate(Vector3.zero);
                 meatEatersList[i].transform.Translate(Vector3.right * speedMeatEater);
@@ -176,7 +181,7 @@ public class MeatEater : MonoBehaviour
 
             }
 
-            else if (meatEatersList[i].GetComponent<MeatEaterInfo>().dir == 2 && meatEatersList[i].transform.localPosition.z > -(GameVariables.width) + 5)
+            else if (meatEatersList[i].GetComponent<MeatEaterInfo>().dir == 2 && meatEatersList[i].transform.localPosition.z > -(GetComponent<GameVariables>().width) + 5)
             {
                 meatEatersList[i].transform.Translate(Vector3.zero);
                 meatEatersList[i].transform.Translate(-Vector3.forward * speedMeatEater);
@@ -189,7 +194,7 @@ public class MeatEater : MonoBehaviour
 
             }
 
-            else if (meatEatersList[i].GetComponent<MeatEaterInfo>().dir == 3 && meatEatersList[i].transform.localPosition.z < (GameVariables.width) - 5)
+            else if (meatEatersList[i].GetComponent<MeatEaterInfo>().dir == 3 && meatEatersList[i].transform.localPosition.z < (GetComponent<GameVariables>().width) - 5)
             {
                 meatEatersList[i].transform.Translate(Vector3.zero);
                 meatEatersList[i].transform.Translate(Vector3.forward * speedMeatEater);
@@ -206,25 +211,49 @@ public class MeatEater : MonoBehaviour
         for (int i = 0; i < babyMeatEatersList.Count; i++)
         {
             // Move the meat eater.
-            if (babyMeatEatersList[i].GetComponent<BabyMeatEaterInfo>().dir == 0 && babyMeatEatersList[i].transform.localPosition.x > -(GameVariables.width) + 5)
+            if (babyMeatEatersList[i].GetComponent<BabyMeatEaterInfo>().dir == 0 && babyMeatEatersList[i].transform.localPosition.x > -(GetComponent<GameVariables>().width) + 5)
             {
                 babyMeatEatersList[i].transform.Translate(Vector3.zero);
                 babyMeatEatersList[i].transform.Translate((-Vector3.right) * speedBabyMeatEater);
+
+                // Rotate the meat eater into the correct direction.
+                Transform eater = babyMeatEatersList[i].GetComponentInChildren<Transform>().Find("meatEater4");
+                Vector3 rotationVector = new Vector3(0, -90, 0);
+                Quaternion rotation = Quaternion.Euler(rotationVector);
+                eater.rotation = rotation;
             }
-            else if (babyMeatEatersList[i].GetComponent<BabyMeatEaterInfo>().dir == 1 && babyMeatEatersList[i].transform.localPosition.x < (GameVariables.width) - 5)
+            else if (babyMeatEatersList[i].GetComponent<BabyMeatEaterInfo>().dir == 1 && babyMeatEatersList[i].transform.localPosition.x < (GetComponent<GameVariables>().width) - 5)
             {
                 babyMeatEatersList[i].transform.Translate(Vector3.zero);
                 babyMeatEatersList[i].transform.Translate((Vector3.right) * speedBabyMeatEater);
+
+                // Rotate the meat eater into the correct direction.
+                Transform eater = babyMeatEatersList[i].GetComponentInChildren<Transform>().Find("meatEater4");
+                Vector3 rotationVector = new Vector3(0, 90, 0);
+                Quaternion rotation = Quaternion.Euler(rotationVector);
+                eater.rotation = rotation;
             }
-            else if (babyMeatEatersList[i].GetComponent<BabyMeatEaterInfo>().dir == 2 && babyMeatEatersList[i].transform.localPosition.z > -(GameVariables.width) + 5)
+            else if (babyMeatEatersList[i].GetComponent<BabyMeatEaterInfo>().dir == 2 && babyMeatEatersList[i].transform.localPosition.z > -(GetComponent<GameVariables>().width) + 5)
             {
                 babyMeatEatersList[i].transform.Translate(Vector3.zero);
                 babyMeatEatersList[i].transform.Translate((-Vector3.forward) * speedBabyMeatEater);
+
+                // Rotate the meat eater into the correct direction.
+                Transform eater = babyMeatEatersList[i].GetComponentInChildren<Transform>().Find("meatEater4");
+                Vector3 rotationVector = new Vector3(0, 180, 0);
+                Quaternion rotation = Quaternion.Euler(rotationVector);
+                eater.rotation = rotation;
             }
-            else if (babyMeatEatersList[i].GetComponent<BabyMeatEaterInfo>().dir == 3 && babyMeatEatersList[i].transform.localPosition.z < (GameVariables.width) - 5)
+            else if (babyMeatEatersList[i].GetComponent<BabyMeatEaterInfo>().dir == 3 && babyMeatEatersList[i].transform.localPosition.z < (GetComponent<GameVariables>().width) - 5)
             {
                 babyMeatEatersList[i].transform.Translate(Vector3.zero);
                 babyMeatEatersList[i].transform.Translate((Vector3.forward) * speedBabyMeatEater);
+
+                // Rotate the meat eater into the correct direction.
+                Transform eater = babyMeatEatersList[i].GetComponentInChildren<Transform>().Find("meatEater4");
+                Vector3 rotationVector = new Vector3(0, 0, 0);
+                Quaternion rotation = Quaternion.Euler(rotationVector);
+                eater.rotation = rotation;
             }
 
         }
@@ -238,17 +267,18 @@ public class MeatEater : MonoBehaviour
             {
                 Destroy(meatEatersList[i]);
                 meatEatersList.RemoveAt(i);
+                numberOfMeatEaters -= 1;
             }
         }
 
-        //for (int i = 0; i < babyMeatEatersList.Count; i++)
-        //{
-        //    if (babyMeatEatersList[i].GetComponent<BabyMeatEaterInfo>().hasEaten == false)
-        //    {
-        //        Destroy(babyMeatEatersList[i]);
-        //        babyMeatEatersList.RemoveAt(i);
-        //    }
-        //}
+        for (int i = babyMeatEatersList.Count - 1; i >= 0; i--)
+        {
+            if (babyMeatEatersList[i].GetComponent<BabyMeatEaterInfo>().hasEaten == false)
+            {
+                Destroy(babyMeatEatersList[i]);
+                babyMeatEatersList.RemoveAt(i);
+            }
+        }
     }
 
     public void KillAllMeatEaters()
@@ -256,22 +286,16 @@ public class MeatEater : MonoBehaviour
         numberOfMeatEaters = 0;
         for (int i = 0; i < meatEatersList.Count; i++)
         {
-            if (meatEatersList[i].GetComponent<MeatEaterInfo>().hasEaten)
-            {
-                numberOfMeatEaters += 1;
-            }
+            numberOfMeatEaters += 1;
             Destroy(meatEatersList[i]);
         }
         meatEatersList.Clear();
 
-        //for (int i = 0; i < babyMeatEatersList.Count; i++)
-        //{
-        //    if (babyMeatEatersList[i].GetComponent<BabyMeatEaterInfo>().hasEaten)
-        //    {
-        //        numberOfMeatEaters += 1;
-        //    }
-        //    Destroy(babyMeatEatersList[i]);
-        //}
-        //babyMeatEatersList.Clear();
+        for (int i = 0; i < babyMeatEatersList.Count; i++)
+        {
+            numberOfMeatEaters += 1;
+            Destroy(babyMeatEatersList[i]);
+        }
+        babyMeatEatersList.Clear();
     }
 }
