@@ -29,13 +29,10 @@ public class PlantEaterInfo : MonoBehaviour
             }
         }
 
+        // Turn off physics when colliding with a baby plant eater.
         if (col.gameObject.name == "BabyPlantEater(Clone)" && isActive)
         {
-            if (gameObject.GetComponent<PlantEaterInfo>().hasReproduced == false && gameObject.GetComponent<PlantEaterInfo>().hasEaten && hasEaten)
-            {
-                Physics.IgnoreCollision(col.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
-
-            }
+            Physics.IgnoreCollision(col.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
         }
 
     }

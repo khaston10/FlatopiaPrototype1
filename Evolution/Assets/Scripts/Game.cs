@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,13 +8,19 @@ public class Game : MonoBehaviour
 {
     int stepsPerDay;
     public bool stepForward = true;
+    bool incomingMeatEater = false;
     int day = 0;
     public int availablePoints;
+    public int daysBetweenIncomingMeatEaters;
 
-    // Set initial limits.
+    // Set initial limits and costs.
     public int foodCountLimit;
+    public int foodCountLimitCost;
     public int plantEaterLimit;
+    public int plantEaterLimitCost;
     public int worldSizeLimit;
+    public int worldSizeLimitCost;
+    public int plantEaterSpeedCost;
 
     public Text foodCountText;
     public Text foodCountLimitText;
@@ -23,9 +30,16 @@ public class Game : MonoBehaviour
     public Text availablePointsText;
     public Text dayText;
     public Text sizeLimitText;
+    public Text plantEaterSpeedText;
+    public Text foodCountLimitCostText;
+    public Text plantEaterLimitCostText;
+    public Text worldSizeLimitCostText;
+    public Text plantEaterSpeedCostText;
+    public Text meatEaterNumberText;
 
     public GameObject controlPanel;
     public GameObject upgradePanel;
+    public GameObject warningPanel;
 
     void Awake()
     {
@@ -105,6 +119,26 @@ public class Game : MonoBehaviour
         // Reset aviable points. THe player is rewarded for having plant eaters survive the round.
         availablePoints += GetComponent<GameVariables>().plantEaterCount;
 
+        // Check the day variable and update the number of meat eaters in the next level.
+        int previousDaysMeatEaters = GetComponent<MeatEater>().numberOfMeatEaters;
+
+        if (day % daysBetweenIncomingMeatEaters > 0)
+        {
+            GetComponent<MeatEater>().numberOfMeatEaters += 1;
+        }
+
+        // Update the incoming meat eater bool.
+        if (GetComponent<MeatEater>().numberOfMeatEaters > previousDaysMeatEaters)
+        {
+            incomingMeatEater = true;
+        }
+
+        else
+        {
+            incomingMeatEater = false;
+        }
+
+
         stepForward = false;
            
     }
@@ -130,10 +164,11 @@ public class Game : MonoBehaviour
 
     public void ClickFoodLimit()
     {
-        if (stepForward == false &&  availablePoints > 5)
+        if (stepForward == false &&  availablePoints >= foodCountLimitCost)
         {
-            foodCountLimit += 5;
-            availablePoints -= 5;
+            foodCountLimit += 1;
+            availablePoints -= foodCountLimitCost;
+            foodCountLimitCost += 1;
         }
     }
 
@@ -148,10 +183,11 @@ public class Game : MonoBehaviour
 
     public void ClickEaterLimit()
     {
-        if (stepForward == false && availablePoints > 5)
+        if (stepForward == false && availablePoints >= plantEaterLimitCost)
         {
-            plantEaterLimit  += 5;
-            availablePoints -= 5;
+            availablePoints -= plantEaterLimitCost;
+            plantEaterLimit += 1;
+            plantEaterLimitCost += 1;
         }
     }
 
@@ -166,10 +202,21 @@ public class Game : MonoBehaviour
 
     public void ClickWorldSizeLimit()
     {
-        if (stepForward == false && availablePoints > 5)
+        if (stepForward == false && availablePoints >= worldSizeLimitCost)
         {
-            worldSizeLimit += 5;
-            availablePoints -= 5;
+            worldSizeLimit += 1;
+            availablePoints -= worldSizeLimitCost;
+            worldSizeLimitCost += 1;
+        }
+    }
+
+    public void ClickPlantEaterSpeed()
+    {
+        if (stepForward == false && availablePoints >= plantEaterSpeedCost)
+        {
+            GetComponent<PlantEater>().speedPlantEater += 1;
+            availablePoints -= plantEaterSpeedCost;
+            plantEaterSpeedCost += 1;
         }
     }
 
@@ -181,8 +228,14 @@ public class Game : MonoBehaviour
         worldSizeText.text = GetComponent<GameVariables>().width.ToString();
         availablePointsText.text = availablePoints.ToString();
         EaterLimitText.text = plantEaterLimit.ToString();
+        plantEaterSpeedText.text = GetComponent<PlantEater>().speedPlantEater.ToString();
         dayText.text = day.ToString();
         sizeLimitText.text = worldSizeLimit.ToString();
+        foodCountLimitCostText.text = "(" + foodCountLimitCost.ToString() + ")";
+        plantEaterLimitCostText.text = "(" + plantEaterLimitCost + ")";
+        worldSizeLimitCostText.text = "(" + worldSizeLimitCost + ")";
+        plantEaterSpeedCostText.text = "(" + plantEaterSpeedCost + ")";
+        meatEaterNumberText.text = GetComponent<MeatEater>().numberOfMeatEaters.ToString();
 
         if (stepForward)
         {
@@ -199,12 +252,19 @@ public class Game : MonoBehaviour
     {
         controlPanel.SetActive(false);
         upgradePanel.SetActive(false);
+        warningPanel.SetActive(false);
+
     }
 
     void MakeVisible()
     {
         controlPanel.SetActive(true);
         upgradePanel.SetActive(true);
+
+        if (incomingMeatEater)
+        {
+            warningPanel.SetActive(true);
+        }
     }
 
 }

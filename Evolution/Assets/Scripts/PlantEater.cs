@@ -153,7 +153,7 @@ public class PlantEater : MonoBehaviour
             if (plantEatersList[i].GetComponent<PlantEaterInfo>().dir == 0 && plantEatersList[i].transform.localPosition.x > -(GetComponent<GameVariables>().width) + 5)
             {
                 plantEatersList[i].transform.Translate(Vector3.zero);
-                plantEatersList[i].transform.Translate(-Vector3.right * speedPlantEater);
+                plantEatersList[i].transform.Translate(-Vector3.right * 0.1f * speedPlantEater);
 
                 // Rotate the plant eater into the correct direction.
                 Transform eater = plantEatersList[i].GetComponentInChildren<Transform>().Find("plantEater3");
@@ -166,7 +166,7 @@ public class PlantEater : MonoBehaviour
             else if (plantEatersList[i].GetComponent<PlantEaterInfo>().dir == 1 && plantEatersList[i].transform.localPosition.x < (GetComponent<GameVariables>().width) - 5)
             {
                 plantEatersList[i].transform.Translate(Vector3.zero);
-                plantEatersList[i].transform.Translate(Vector3.right * speedPlantEater);
+                plantEatersList[i].transform.Translate(Vector3.right * 0.1f * speedPlantEater);
 
                 // Rotate the plant eater into the correct direction.
                 Transform eater = plantEatersList[i].GetComponentInChildren<Transform>().Find("plantEater3");
@@ -179,7 +179,7 @@ public class PlantEater : MonoBehaviour
             else if (plantEatersList[i].GetComponent<PlantEaterInfo>().dir == 2 && plantEatersList[i].transform.localPosition.z > -(GetComponent<GameVariables>().width) + 5)
             {
                 plantEatersList[i].transform.Translate(Vector3.zero);
-                plantEatersList[i].transform.Translate(-Vector3.forward * speedPlantEater);
+                plantEatersList[i].transform.Translate(-Vector3.forward * 0.1f * speedPlantEater);
 
                 // Rotate the plant eater into the correct direction.
                 Transform eater = plantEatersList[i].GetComponentInChildren<Transform>().Find("plantEater3");
@@ -192,7 +192,7 @@ public class PlantEater : MonoBehaviour
             else if (plantEatersList[i].GetComponent<PlantEaterInfo>().dir == 3 && plantEatersList[i].transform.localPosition.z < (GetComponent<GameVariables>().width) - 5)
             {
                 plantEatersList[i].transform.Translate(Vector3.zero);
-                plantEatersList[i].transform.Translate(Vector3.forward * speedPlantEater);
+                plantEatersList[i].transform.Translate(Vector3.forward * 0.1f * speedPlantEater);
 
                 // Rotate the plant eater into the correct direction.
                 Transform eater = plantEatersList[i].GetComponentInChildren<Transform>().Find("plantEater3");
@@ -209,7 +209,7 @@ public class PlantEater : MonoBehaviour
             if (babyPlantEatersList[i].GetComponent<BabyPlantEaterInfo>().dir == 0 && babyPlantEatersList[i].transform.localPosition.x > -(GetComponent<GameVariables>().width) + 5)
             {
                 babyPlantEatersList[i].transform.Translate(Vector3.zero);
-                babyPlantEatersList[i].transform.Translate((-Vector3.right) * speedBabyPlantEater);
+                babyPlantEatersList[i].transform.Translate((-Vector3.right) * 0.1f * speedPlantEater);
 
                 // Rotate the plant eater into the correct direction.
                 Transform eater = babyPlantEatersList[i].GetComponentInChildren<Transform>().Find("plantEater3");
@@ -220,7 +220,7 @@ public class PlantEater : MonoBehaviour
             else if (babyPlantEatersList[i].GetComponent<BabyPlantEaterInfo>().dir == 1 && babyPlantEatersList[i].transform.localPosition.x < (GetComponent<GameVariables>().width) - 5)
             {
                 babyPlantEatersList[i].transform.Translate(Vector3.zero);
-                babyPlantEatersList[i].transform.Translate((Vector3.right) * speedBabyPlantEater);
+                babyPlantEatersList[i].transform.Translate((Vector3.right) * 0.1f * speedPlantEater);
 
                 // Rotate the plant eater into the correct direction.
                 Transform eater = babyPlantEatersList[i].GetComponentInChildren<Transform>().Find("plantEater3");
@@ -231,7 +231,7 @@ public class PlantEater : MonoBehaviour
             else if (babyPlantEatersList[i].GetComponent<BabyPlantEaterInfo>().dir == 2 && babyPlantEatersList[i].transform.localPosition.z > -(GetComponent<GameVariables>().width) + 5)
             {
                 babyPlantEatersList[i].transform.Translate(Vector3.zero);
-                babyPlantEatersList[i].transform.Translate((-Vector3.forward) * speedBabyPlantEater);
+                babyPlantEatersList[i].transform.Translate((-Vector3.forward) * 0.1f * speedPlantEater);
 
                 // Rotate the plant eater into the correct direction.
                 Transform eater = babyPlantEatersList[i].GetComponentInChildren<Transform>().Find("plantEater3");
@@ -242,7 +242,7 @@ public class PlantEater : MonoBehaviour
             else if (babyPlantEatersList[i].GetComponent<BabyPlantEaterInfo>().dir == 3 && babyPlantEatersList[i].transform.localPosition.z < (GetComponent<GameVariables>().width) - 5)
             {
                 babyPlantEatersList[i].transform.Translate(Vector3.zero);
-                babyPlantEatersList[i].transform.Translate((Vector3.forward) * speedBabyPlantEater);
+                babyPlantEatersList[i].transform.Translate((Vector3.forward) * 0.1f * speedPlantEater);
 
                 // Rotate the plant eater into the correct direction.
                 Transform eater = babyPlantEatersList[i].GetComponentInChildren<Transform>().Find("plantEater3");
