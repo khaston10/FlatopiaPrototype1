@@ -12,6 +12,12 @@ public class Game : MonoBehaviour
     int day = 0;
     public int availablePoints;
     public int daysBetweenIncomingMeatEaters;
+    int newMeatEaters = 0;
+    int incomingMeatEaterCounter = 0;
+    int autoPlayCounter = 0;
+    float gameSpeed = 1f;
+    Vector3 cameraStartVector = new Vector3(10f, 30f, 0f);
+    Quaternion cameraStartRotation;
 
     // Set initial limits and costs.
     public int foodCountLimit;
@@ -40,6 +46,8 @@ public class Game : MonoBehaviour
     public GameObject controlPanel;
     public GameObject upgradePanel;
     public GameObject warningPanel;
+    public GameObject autoPlayPanel;
+    public GameObject light;
 
     void Awake()
     {
@@ -62,6 +70,7 @@ public class Game : MonoBehaviour
         GetComponent<Food>().SetUp();
         GetComponent<PlantEater>().UpdateData();
         GetComponent<MeatEater>().UpdateData();
+        GetComponent<CameraControler>().UpdateCameraPosition();
 
 
         // Create clear blocker planes incase objects fall off.
@@ -81,6 +90,12 @@ public class Game : MonoBehaviour
         GetComponent<PlantEater>().CreateBabies();
         GetComponent<PlantEater>().CreatePlantEaters();
 
+        // Set the camera rotation to start position.
+        int cameraCounterInterval = 3;
+        int cameraCounter = 0;
+        cameraStartRotation = Quaternion.Euler(cameraStartVector);
+        light.transform.rotation = cameraStartRotation;
+
         for (int step = 0; step < GameVariables.stepsPerDay; step++)
         {
             // Pick a direction to move plant eater.
@@ -95,7 +110,15 @@ public class Game : MonoBehaviour
             // Move meat eaters.
             GetComponent<MeatEater>().MoveMeatEaters();
 
-            yield return new WaitForSeconds(GameVariables.secondsPerStep);
+            // Update rotation of light.
+            cameraCounter++;
+            if (cameraCounter == cameraCounterInterval)
+            {
+                light.transform.Rotate(Vector3.right);
+                cameraCounter = 0;
+            }
+
+            yield return new WaitForSeconds(GameVariables.secondsPerStep * gameSpeed);
         }
         // Check to see if the meat eaters have eaten. Delete the ones who have not.
         GetComponent<MeatEater>().KillUnfedMeatEaters();
@@ -119,16 +142,19 @@ public class Game : MonoBehaviour
         // Reset aviable points. THe player is rewarded for having plant eaters survive the round.
         availablePoints += GetComponent<GameVariables>().plantEaterCount;
 
-        // Check the day variable and update the number of meat eaters in the next level.
+        // Check the incoming Meat Eater Counter variable and update the number of meat eaters in the next level.
         int previousDaysMeatEaters = GetComponent<MeatEater>().numberOfMeatEaters;
+        incomingMeatEaterCounter += 1;
 
-        if (day % daysBetweenIncomingMeatEaters > 0)
+        if (daysBetweenIncomingMeatEaters == incomingMeatEaterCounter)
         {
             GetComponent<MeatEater>().numberOfMeatEaters += 1;
+            incomingMeatEaterCounter = 0;
         }
 
         // Update the incoming meat eater bool.
-        if (GetComponent<MeatEater>().numberOfMeatEaters > previousDaysMeatEaters)
+        newMeatEaters = GetComponent<MeatEater>().numberOfMeatEaters - previousDaysMeatEaters;
+        if (newMeatEaters > 0)
         {
             incomingMeatEater = true;
         }
@@ -138,8 +164,22 @@ public class Game : MonoBehaviour
             incomingMeatEater = false;
         }
 
+        // Check to see if Auto Play is being used.
 
-        stepForward = false;
+        if (autoPlayCounter == 0)
+        {
+            gameSpeed = 1;
+            stepForward = false;
+
+        }
+
+        else
+        {
+            autoPlayCounter -= 1;
+            StartCoroutine(UpdatePlantEaters());
+            UpdatePlantEaters();
+        }
+        
            
     }
 
@@ -220,6 +260,27 @@ public class Game : MonoBehaviour
         }
     }
 
+    public void ClickAutoPlay5()
+    {
+        gameSpeed = 0.1f;
+        autoPlayCounter = 5;
+        ClickNextDay();
+    }
+
+    public void ClickAutoPlay10()
+    {
+        gameSpeed = 0.02f;
+        autoPlayCounter = 10;
+        ClickNextDay();
+    }
+
+    public void ClickAutoPlay20()
+    {
+        gameSpeed = 0.005f;
+        autoPlayCounter = 20;
+        ClickNextDay();
+    }
+
     void Update()
     {
         foodCountText.text = GetComponent<GameVariables>().foodCount.ToString();
@@ -235,7 +296,7 @@ public class Game : MonoBehaviour
         plantEaterLimitCostText.text = "(" + plantEaterLimitCost + ")";
         worldSizeLimitCostText.text = "(" + worldSizeLimitCost + ")";
         plantEaterSpeedCostText.text = "(" + plantEaterSpeedCost + ")";
-        meatEaterNumberText.text = GetComponent<MeatEater>().numberOfMeatEaters.ToString();
+        meatEaterNumberText.text = "x" + newMeatEaters.ToString();
 
         if (stepForward)
         {
@@ -246,6 +307,7 @@ public class Game : MonoBehaviour
         {
             MakeVisible();
         }
+
     }
 
     void MakeInvisible()
@@ -253,6 +315,7 @@ public class Game : MonoBehaviour
         controlPanel.SetActive(false);
         upgradePanel.SetActive(false);
         warningPanel.SetActive(false);
+        autoPlayPanel.SetActive(false);
 
     }
 
@@ -260,6 +323,7 @@ public class Game : MonoBehaviour
     {
         controlPanel.SetActive(true);
         upgradePanel.SetActive(true);
+        autoPlayPanel.SetActive(true);
 
         if (incomingMeatEater)
         {

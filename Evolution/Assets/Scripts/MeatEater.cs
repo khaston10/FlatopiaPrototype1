@@ -11,7 +11,6 @@ public class MeatEater : MonoBehaviour
     public int numberOfIncomingMeatEaters;
     public int changeDirectionEveryNumStep;
     public float speedMeatEater;
-    public float speedBabyMeatEater;
     List<Vector3> positions = new List<Vector3>();
     List<GameObject> meatEatersList = new List<GameObject>();
     List<GameObject> babyMeatEatersList = new List<GameObject>();
@@ -214,7 +213,7 @@ public class MeatEater : MonoBehaviour
             if (babyMeatEatersList[i].GetComponent<BabyMeatEaterInfo>().dir == 0 && babyMeatEatersList[i].transform.localPosition.x > -(GetComponent<GameVariables>().width) + 5)
             {
                 babyMeatEatersList[i].transform.Translate(Vector3.zero);
-                babyMeatEatersList[i].transform.Translate((-Vector3.right) * 0.1f * speedBabyMeatEater);
+                babyMeatEatersList[i].transform.Translate((-Vector3.right) * 0.1f * speedMeatEater);
 
                 // Rotate the meat eater into the correct direction.
                 Transform eater = babyMeatEatersList[i].GetComponentInChildren<Transform>().Find("meatEater4");
@@ -225,7 +224,7 @@ public class MeatEater : MonoBehaviour
             else if (babyMeatEatersList[i].GetComponent<BabyMeatEaterInfo>().dir == 1 && babyMeatEatersList[i].transform.localPosition.x < (GetComponent<GameVariables>().width) - 5)
             {
                 babyMeatEatersList[i].transform.Translate(Vector3.zero);
-                babyMeatEatersList[i].transform.Translate((Vector3.right) * 0.1f * speedBabyMeatEater);
+                babyMeatEatersList[i].transform.Translate((Vector3.right) * 0.1f * speedMeatEater);
 
                 // Rotate the meat eater into the correct direction.
                 Transform eater = babyMeatEatersList[i].GetComponentInChildren<Transform>().Find("meatEater4");
@@ -236,7 +235,7 @@ public class MeatEater : MonoBehaviour
             else if (babyMeatEatersList[i].GetComponent<BabyMeatEaterInfo>().dir == 2 && babyMeatEatersList[i].transform.localPosition.z > -(GetComponent<GameVariables>().width) + 5)
             {
                 babyMeatEatersList[i].transform.Translate(Vector3.zero);
-                babyMeatEatersList[i].transform.Translate((-Vector3.forward) * 0.1f * speedBabyMeatEater);
+                babyMeatEatersList[i].transform.Translate((-Vector3.forward) * 0.1f * speedMeatEater);
 
                 // Rotate the meat eater into the correct direction.
                 Transform eater = babyMeatEatersList[i].GetComponentInChildren<Transform>().Find("meatEater4");
@@ -247,7 +246,7 @@ public class MeatEater : MonoBehaviour
             else if (babyMeatEatersList[i].GetComponent<BabyMeatEaterInfo>().dir == 3 && babyMeatEatersList[i].transform.localPosition.z < (GetComponent<GameVariables>().width) - 5)
             {
                 babyMeatEatersList[i].transform.Translate(Vector3.zero);
-                babyMeatEatersList[i].transform.Translate((Vector3.forward) * 0.1f * speedBabyMeatEater);
+                babyMeatEatersList[i].transform.Translate((Vector3.forward) * 0.1f * speedMeatEater);
 
                 // Rotate the meat eater into the correct direction.
                 Transform eater = babyMeatEatersList[i].GetComponentInChildren<Transform>().Find("meatEater4");
