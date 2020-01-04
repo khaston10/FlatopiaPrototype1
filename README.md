@@ -1,4 +1,4 @@
-# Flatopia - Prototype 2
+# Flatopia - Prototype 1
 This is a game being made with Unity.
 
 ## Getting Started
